@@ -3,6 +3,13 @@ Introduction:
 ============
                The purpose of this project is to clean the existing vBulletin database by caching any images that are linked externally, update the post to point to the cached location and remove any broken image links.
 
+Installation Instructions:
+=========================
+
+- Copy files inside image_cache directory to the forums root
+- Upload product-image_sanitizer.xml file from manage product (vB admincp)
+- Update settings according to your need.
+
 
 Version: 1.0
 Author:  Confiz
