@@ -1,0 +1,12 @@
+
+Introduction:
+============
+               The purpose of this project is to clean the existing vBulletin database by caching any images that are linked externally, update the post to point to the cached location and remove any broken image links.
+
+
+Version: 1.0
+Author:  Confiz
+Contributor:  Shakeel Mumtaz
+Contact: opensource[at]confiz[dot]com 
+
+Any feedback/comment/issue is welcome!
