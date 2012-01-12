@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<product productid="image_sanitizer" active="1">
+    <title>Image Sanitizer</title>
+    <description>This Product will download images which are come [img]...[/img] tag on local file system.</description>
+    <version>1.0</version>
+    <url />
+    <versioncheckurl />
+    <dependencies>
+    </dependencies>
+    <codes>
+        <code version="1.0">
+            <installcode><![CDATA[echo "<div class=\"smallfont\"><strong>Installing new tables ...</strong></div><br /><br />";
+
+$db->reporterror = FALSE;
+
+$SQL = 'CREATE TABLE ' . TABLE_PREFIX . 'imagecache ('
+. 'ID int NOT NULL AUTO_INCREMENT,'
+. ' post_id int NOT NULL,'
+. ' original_url text NOT NULL,'
+. ' hash_value varchar(80) NOT NULL,'
+. 'PRIMARY KEY (ID),'
+. ' KEY post_id (post_id)'
+. ') '
+. 'TYPE = myisam';
+
+$db->query_write($SQL);
+$db->query_write('ALTER TABLE ' . TABLE_PREFIX . 'imagecache AUTO_INCREMENT=100;');
+
+echo "<div class=\"smallfont\">Table '" . TABLE_PREFIX . "imagecache ' created ...</div><br />";
+
+$db->reporterror = TRUE;
+
+echo "<br />";
+echo "<div class=\"smallfont\"><strong>Table setup complete ...</strong></div><br /><br />";
+]]>
+            </installcode>
+            <uninstallcode><![CDATA[/*
+echo "<div class=\"smallfont\"><strong>Uninstalling tables ...</strong></div><br /><br />";
+
+$db->reporterror = FALSE;
+
+$SQL = "DROP TABLE IF EXISTS " . TABLE_PREFIX . "imagecache ";
+$db->query_write($SQL);
+echo "<div class=\"smallfont\">Table '" . TABLE_PREFIX ."imagecache ' removed ...</div><br />";
+
+$db->reporterror = TRUE;
+
+echo "<br />";
+echo "<div class=\"smallfont\"><strong>Table setup complete ...</strong></div><br /><br />";
+*/]]>
+            </uninstallcode>
+        </code>
+    </codes>
+    <templates>
+    </templates>
+    <plugins>
+        <plugin active="1" executionorder="5">
+            <title>Sanitize edit post</title>
+            <hookname>editpost_update_process</hookname>
+            <phpcode><![CDATA[require_once(DIR . '/includes/plugins/editpost_image_cache.php');]]>
+            </phpcode>
+        </plugin>
+        <plugin active="1" executionorder="5">
+            <title>Sanitize new post</title>
+            <hookname>newpost_process</hookname>
+            <phpcode><![CDATA[require_once(DIR . '/includes/plugins/newpost_image_cache.php');]]>
+            </phpcode>
+        </plugin>
+    </plugins>
+    <phrases>
+        <phrasetype name="vBulletin Settings" fieldname="vbsettings">
+
+            <phrase name="setting_destination_path_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Destination Path]]>
+            </phrase>
+            <phrase name="setting_destination_path_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[Complete path of cache directory e.g /var/www/forums/image_cache/ and directory should have 0777 permissions.]]>
+            </phrase>
+
+            <phrase name="setting_host_name_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Host]]>
+            </phrase>
+            <phrase name="setting_host_name_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[e.g http://www.abc.com/forum or http://localhost:8080/forum/]]>
+            </phrase>
+
+            <phrase name="setting_timeout_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Timeout]]>
+            </phrase>
+            <phrase name="setting_timeout_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[how much time the request wait for the URL to get result.]]>
+            </phrase>
+
+            <phrase name="setting_watermark_path_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Watermark path]]>
+            </phrase>
+            <phrase name="setting_watermark_path_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[ image path e.g /var/www/html/watermark.png]]>
+            </phrase>
+
+            <phrase name="setting_is_watermark_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Enable/Disable Watermark]]>
+            </phrase>
+            <phrase name="setting_is_watermark_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[ Enable = 1, Disable = 0]]>
+            </phrase>
+
+            <phrase name="setting_watermark_type_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Watermark Type]]>
+            </phrase>
+            <phrase name="setting_watermark_type_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[ Image watermark = 1, Text Watermark = 2]]>
+            </phrase>
+
+            <phrase name="setting_watermark_text_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Watermark Text]]>
+            </phrase>
+            <phrase name="setting_watermark_text_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[ e.g your site URL http://www.abc.com or Perthstreetbikes.com]]>
+            </phrase>
+
+            <phrase name="setting_watermark_placement_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Watermark Placement]]>
+            </phrase>
+            <phrase name="setting_watermark_placement_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[ Total nine positions where you can place the watermark image or text. e.g top left, center, center right etc.]]>
+            </phrase>
+
+            <phrase name="setting_is_resizeable_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Enable/Disable Resizing]]>
+            </phrase>
+            <phrase name="setting_is_resizeable_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[ Enable=1, Disable=0 ]]>
+            </phrase>
+
+            <phrase name="setting_image_width_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Image Width]]>
+            </phrase>
+            <phrase name="setting_image_width_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[ e.g 200]]>
+            </phrase>
+
+            <phrase name="setting_image_height_title" date="1227150569" username="Admin" version="1.0"><![CDATA[Image Height]]>
+            </phrase>
+            <phrase name="setting_image_height_desc" date="1227150569" username="Admin" version="1.0"><![CDATA[ e.g 600]]>
+            </phrase>
+
+            <phrase name="settinggroup_image_sanitizer_group" date="1227150569" username="Admin" version="1.0"><![CDATA[Image Sanitizer]]>
+            </phrase>
+        </phrasetype>
+    </phrases>
+    <options>
+        <settinggroup name="image_sanitizer_group" displayorder="110">
+            <setting varname="destination_path" displayorder="10">
+                <datatype>free</datatype>
+                <defaultvalue>/var/www/forum/image_cache/</defaultvalue>
+            </setting>
+            <setting varname="host_name" displayorder="20">
+                <datatype>free</datatype>
+                <defaultvalue>http://localhost/forum/</defaultvalue>
+            </setting>
+            <setting varname="timeout" displayorder="30">
+                <datatype>free</datatype>
+                <defaultvalue>15</defaultvalue>
+            </setting>
+            <setting varname="watermark_path" displayorder="40">
+                <datatype>free</datatype>
+                <defaultvalue>/var/www/watermark.png</defaultvalue>
+            </setting>
+            <setting varname="is_watermark" displayorder="50">
+                <datatype>free</datatype>
+                <defaultvalue>0</defaultvalue>
+            </setting>
+
+            <setting varname="watermark_type" displayorder="60">
+                <datatype>free</datatype>
+                <defaultvalue>1</defaultvalue>
+            </setting>
+            <setting varname="watermark_text" displayorder="70">
+                <datatype>free</datatype>
+                <defaultvalue>hostname.com</defaultvalue>
+            </setting>
+            <setting varname="watermark_placement" displayorder="80">
+                <datatype>free</datatype>
+                <defaultvalue>1</defaultvalue>
+            </setting>
+            <setting varname="is_resizeable" displayorder="90">
+                <datatype>free</datatype>
+                <defaultvalue>0</defaultvalue>
+            </setting>
+            <setting varname="image_width" displayorder="100">
+                <datatype>free</datatype>
+                <defaultvalue>1024</defaultvalue>
+            </setting>
+            <setting varname="image_height" displayorder="110">
+                <datatype>free</datatype>
+                <defaultvalue>768</defaultvalue>
+            </setting>
+        </settinggroup>
+    </options>
+    <helptopics>
+    </helptopics>
+    <cronentries>
+    </cronentries>
+    <faqentries>
+    </faqentries>
+</product>
